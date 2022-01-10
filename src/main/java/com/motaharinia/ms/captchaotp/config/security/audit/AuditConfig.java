@@ -8,7 +8,7 @@ import org.springframework.data.domain.AuditorAware;
 
 
 /**
- * @author eng.motahari@gmail.com
+ * @author eng.motahari@gmail.com<br>
  * کلاس تنظیمات بازرسی انتیتی ها
  */
 @Configuration

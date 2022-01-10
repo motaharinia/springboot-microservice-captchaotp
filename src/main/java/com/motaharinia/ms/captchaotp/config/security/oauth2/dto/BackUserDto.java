@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 
 /**
- * @author pourya <br>
+ * @author eng.motahari@gmail.com <br>
  * کلاس مدل کاربر بک برنامه
  */
 @Data
