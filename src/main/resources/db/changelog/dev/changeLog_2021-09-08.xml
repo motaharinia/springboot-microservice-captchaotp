@@ -1,0 +1,160 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="m.motaharinia (generated)" id="1631079886149-1">
+        <createTable tableName="fso_uploaded_file">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="fso_uploaded_filePK"/>
+            </column>
+            <column name="create_at" type="timestamp"/>
+            <column name="create_user_id" type="BIGINT"/>
+            <column name="create_user_ip" type="VARCHAR(255)"/>
+            <column name="hidden" type="BIT"/>
+            <column name="invalid" type="BIT"/>
+            <column name="update_at" type="timestamp"/>
+            <column name="update_user_id" type="BIGINT"/>
+            <column name="update_user_ip" type="VARCHAR(255)"/>
+            <column name="file_entity" type="VARCHAR(255)"/>
+            <column name="file_extension" type="VARCHAR(255)"/>
+            <column name="file_full_name" type="VARCHAR(255)"/>
+            <column name="file_key" type="VARCHAR(255)"/>
+            <column name="file_mime_type" type="VARCHAR(255)"/>
+            <column name="file_name" type="VARCHAR(255)"/>
+            <column name="file_size" type="BIGINT"/>
+            <column name="file_subsystem" type="VARCHAR(255)"/>
+            <column name="file_upload_date_time" type="date"/>
+            <column name="file_uploaded_path" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631079886149-2">
+        <createTable tableName="member">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="memberPK"/>
+            </column>
+            <column name="create_at" type="timestamp"/>
+            <column name="create_user_id" type="BIGINT"/>
+            <column name="create_user_ip" type="VARCHAR(255)"/>
+            <column name="hidden" type="BIT"/>
+            <column name="invalid" type="BIT"/>
+            <column name="update_at" type="timestamp"/>
+            <column name="update_user_id" type="BIGINT"/>
+            <column name="update_user_ip" type="VARCHAR(255)"/>
+            <column name="date_of_birth" type="date"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="national_code" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631079886149-3">
+        <addUniqueConstraint columnNames="national_code" tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631087393074-1">
+        <createTable tableName="fso_uploaded_file">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="fso_uploaded_filePK"/>
+            </column>
+            <column name="create_at" type="timestamp"/>
+            <column name="create_user_id" type="BIGINT"/>
+            <column name="create_user_ip" type="VARCHAR(255)"/>
+            <column name="hidden" type="BIT"/>
+            <column name="invalid" type="BIT"/>
+            <column name="update_at" type="timestamp"/>
+            <column name="update_user_id" type="BIGINT"/>
+            <column name="update_user_ip" type="VARCHAR(255)"/>
+            <column name="file_entity" type="VARCHAR(255)"/>
+            <column name="file_extension" type="VARCHAR(255)"/>
+            <column name="file_full_name" type="VARCHAR(255)"/>
+            <column name="file_key" type="VARCHAR(255)"/>
+            <column name="file_mime_type" type="VARCHAR(255)"/>
+            <column name="file_name" type="VARCHAR(255)"/>
+            <column name="file_size" type="BIGINT"/>
+            <column name="file_subsystem" type="VARCHAR(255)"/>
+            <column name="file_upload_date_time" type="date"/>
+            <column name="file_uploaded_path" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631087393074-2">
+        <createTable tableName="member">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="memberPK"/>
+            </column>
+            <column name="create_at" type="timestamp"/>
+            <column name="create_user_id" type="BIGINT"/>
+            <column name="create_user_ip" type="VARCHAR(255)"/>
+            <column name="hidden" type="BIT"/>
+            <column name="invalid" type="BIT"/>
+            <column name="update_at" type="timestamp"/>
+            <column name="update_user_id" type="BIGINT"/>
+            <column name="update_user_ip" type="VARCHAR(255)"/>
+            <column name="date_of_birth" type="date"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="national_code" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631087393074-3">
+        <addUniqueConstraint columnNames="national_code" constraintName="UK5dtarg0a07qlqlgc7kbl6boa1" tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631088836109-1">
+        <dropUniqueConstraint constraintName="national_code" tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631088836109-2">
+        <dropTable tableName="fso_uploaded_file"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631088836109-3">
+        <dropTable tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089064938-1">
+        <dropUniqueConstraint constraintName="national_code" tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089064938-2">
+        <dropTable tableName="fso_uploaded_file"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089064938-3">
+        <dropTable tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089107731-1">
+        <dropUniqueConstraint constraintName="national_code" tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089107731-2">
+        <dropTable tableName="fso_uploaded_file"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089107731-3">
+        <dropTable tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089151835-1">
+        <dropUniqueConstraint constraintName="national_code" tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089151835-2">
+        <dropTable tableName="fso_uploaded_file"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089151835-3">
+        <dropTable tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089268758-1">
+        <dropUniqueConstraint constraintName="national_code" tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089268758-2">
+        <dropTable tableName="fso_uploaded_file"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089268758-3">
+        <dropTable tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089302649-1">
+        <dropUniqueConstraint constraintName="national_code" tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089302649-2">
+        <dropTable tableName="fso_uploaded_file"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089302649-3">
+        <dropTable tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089643543-1">
+        <dropUniqueConstraint constraintName="national_code" tableName="member"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089643543-2">
+        <dropTable tableName="fso_uploaded_file"/>
+    </changeSet>
+    <changeSet author="m.motaharinia (generated)" id="1631089643543-3">
+        <dropTable tableName="member"/>
+    </changeSet>
+</databaseChangeLog>

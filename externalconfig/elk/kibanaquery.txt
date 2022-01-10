@@ -1,0 +1,2 @@
+1.filter logs by level and type and url:
+level:error AND exceptionDto.type:"BUSINESS_EXCEPTION" AND exceptionDto.url:"/Security-users/**"

@@ -1,0 +1,27 @@
+version: '2'
+networks:
+  loyalty:
+    external: true
+services:
+  ms-captchaotp:
+    container_name: ms-captchaotp
+    image: dockerreg.local:5000/ms-captchaotp:develop
+    restart: always
+    #volumes:
+    #        -  /root/UM/maccess/:/opt/storage/UM/maccess
+    environment:
+      - SPRING_PROFILES_ACTIVE=tst
+    #        - DB_HOST=172.16.170.108:3306
+    #        - DB_USER=root
+    #        - DB_PASS=asd123ASD!@#
+    ports:
+      - '8002:8002'
+    volumes:
+      - /home/fso:/fso
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: 172.16.120.59:24224
+        tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
+    networks:
+      - loyalty

@@ -1,0 +1,12 @@
+FROM dockerreg.local:5000/openjdk:13-alpine
+RUN apk --update add fontconfig ttf-dejavu
+RUN apk add --no-cache tzdata
+ENV TZ Asia/Tehran
+#RUN addgroup -S spring && adduser -S spring -G spring
+RUN mkdir -p /fso
+RUN mkdir -p /fso/logs
+#RUN chown -R spring:spring /fso
+#USER spring:spring
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-Dspring.profiles.active=tst","-jar","/app.jar"]

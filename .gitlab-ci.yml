@@ -1,0 +1,120 @@
+stages:
+- test
+- buildJar
+- sonar
+- buildDockerImage
+- release
+- deploy
+
+variables:
+  TEST_IMAGE: dockerreg.local:5000/ms-captchaotp:$CI_COMMIT_REF_NAME
+  RELEASE_IMAGE: dockerreg.local:5000/ms-captchaotp:latest
+  DOCKER_DRIVER: overlay2
+
+
+build-jarfile-tst:
+  image: dockerreg.local:5000/mvn-archaiva:latest
+  stage: buildJar
+  tags:
+    - build
+  artifacts:
+    paths:
+      - ./target/ms-captchaotp*.jar
+    expire_in: 1 week
+  script:
+    - whoami
+    - java -version
+    - ls -lah
+    - mvn clean package -Ptst -DskipTests
+    - ls -lah ./target
+  only:
+    - develop
+
+build-dockerfile-tst:
+  stage: buildDockerImage
+  tags:
+    - build
+  script:
+    - whoami
+    - docker login -u root -p 12345678 https://dockerreg.local:5000
+    - docker build -f ./cicd/Dockerfile-tst --pull  -t $TEST_IMAGE .
+    - docker push $TEST_IMAGE
+    - docker rmi $(docker images --filter "dangling=true" -q --no-trunc) || true
+  only:
+    - develop
+    
+release-on-tst:
+  image: dockerreg.local:5000/tiangolo-compose
+  stage: release
+  tags:
+    - deploy
+  script:
+    - docker  rm -f ms-captchaotp  || true
+    - docker login -u root -p 12345678 https://dockerreg.local:5000
+    - docker pull $TEST_IMAGE
+    - docker images
+    - docker-compose -f ./cicd/deploy-tst.yml up -d
+    - docker rmi $(docker images --filter "dangling=true" -q --no-trunc) || true
+  only:
+    - develop
+    
+
+
+build-jarfile-prod:
+  image: dockerreg.local:5000/mvn-archaiva:latest
+  stage: buildJar
+  tags:
+    - build
+  artifacts:
+    paths:
+      - ./target
+    expire_in: 1 week
+  script:
+    - whoami
+    - java -version
+    - ls -lah
+    - mvn clean package -Pprod -DskipTests
+    - ls -lah ./target
+  only:
+    - master
+
+sonar:
+  image: dockerreg.local:5000/mvn-archaiva:latest
+  stage: sonar
+  tags:
+    - build
+  artifacts:
+    paths:
+      - ./target
+    expire_in: 1 week
+  script:
+    - mvn sonar:sonar -Dsonar.projectKey=ms-captchaotp -Dsonar.host.url=https://sonar.local.ir -Dsonar.login=9fe330690784818b3160b971fef6a628af124a90
+  only:
+    - master
+
+build-dockerfile-prod:
+  stage: buildDockerImage
+  tags:
+    - build
+  script:
+    - whoami
+    - docker login -u root -p 12345678 https://dockerreg.local:5000
+    - docker build -f ./cicd/Dockerfile-prod --pull  -t $RELEASE_IMAGE .
+    - docker push $RELEASE_IMAGE
+  only:
+    - master
+    
+release-on-prod:
+  image: dockerreg.local:5000/tiangolo-compose
+  stage: release
+  tags:
+    - production
+  script:
+    - docker login -u root -p 12345678 https://dockerreg.local:5000
+    - docker  rm -f ms-captchaotp  || true
+    - docker pull $RELEASE_IMAGE
+    - docker images
+    - docker-compose -f ./cicd/deploy-prod.yml up -d
+    - docker rmi $(docker images --filter "dangling=true" -q --no-trunc) || true
+  only:
+    - master

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--
+     https://reflectoring.io/profile-specific-logging-spring-boot/
+     -->
+
+    <!--خواندن متغیرهای application.properties و ریختن آنها در متغیرهای logback که در این فایل بتوانیم از مقدار آنها استفاده کنیم-->
+    <springProperty name="logstashHost" source="app.logging.logstash.host"/>
+    <springProperty name="logstashPort" source="app.logging.logstash.port"/>
+
+    <!--این هوک کمک میکند که اگر لاگی در حال ارسال به سرویس لاگ خود است و یکدفعه سامانه shutdown شده، لاگ حتما به دست سرویس لاگ برسد-->
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+    <!--تعریف اپندرها که میتوانیم با استفاده از نام آنها ، هر کدام را در پروفایل اسپرینگ مورد نظر خودمان فعال کنیم-->
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <remoteHost>${logstashHost}</remoteHost>
+        <port>${logstashPort}</port>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!--            <customFields>{"app_name":"ms_captchaotp", "app_port": "7071"}</customFields>-->
+        </encoder>
+    </appender>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+<!--    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
+<!--            <Pattern>-->
+<!--                %cyan(%d{ISO8601}) %highlight(%-5level) [%blue(%-30t)] %yellow(%C{1.}): %msg%n%throwable-->
+<!--            </Pattern>-->
+<!--        </layout>-->
+<!--    </appender>-->
+
+    <!--تنظیم فرمت لاگ کردن و استفاده از اپندرهای تعریف شده سامانه با توجه به هر اکتیو پروفایل اسپرینگ-->
+    <springProfile name="dev">
+        <root level="ALL">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+<!--        <logger name="io.reflectoring" level="DEBUG"/>-->
+    </springProfile>
+    <springProfile name="tst">
+        <root level="ALL">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="LOGSTASH"/>
+        </root>
+<!--        <logger name="io.reflectoring" level="DEBUG"/>-->
+    </springProfile>
+    <springProfile name="prod">
+        <root level="WARN">
+            <appender-ref ref="LOGSTASH"/>
+        </root>
+<!--        <logger name="io.reflectoring" level="WARN"/>-->
+    </springProfile>
+
+</configuration>
