@@ -82,9 +82,4 @@ public class CaptchaBackController {
         captchaService.check(sourceProjectEnum, key, value, methodName, username, tryCount, tryTtlInMinutes, banTtlInMinutes);
         return new ClientResponseDto<>(null, FORM_SUBMIT_SUCCESS);
     }
-
-    @GetMapping(value = "/test")
-    public ClientResponseDto<String> test() {
-        return new ClientResponseDto<>("test response", FORM_SUBMIT_SUCCESS);
-    }
 }
